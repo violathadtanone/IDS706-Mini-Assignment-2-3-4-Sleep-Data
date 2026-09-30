@@ -104,3 +104,22 @@ def test_integration_workflow():
     assert np.isfinite(
         plot_data[["Daily Steps", "Actual", "Predicted"]].values
     ).all()
+    
+# Edge case - Check that the entire pipeline can handle a very small dataset
+def test_edge_5_integration_small_dataset():
+    test_data = sleep_data[sleep_data["Gender"] == "Female"].head(10).copy()
+
+    x = test_data[["Daily Steps"]]
+    y = test_data["Sleep Duration"]
+
+    x_train, x_test, y_train, y_test = train_test_split(
+        x, y, test_size=0.2, random_state=100
+    )
+
+    model = LinearRegression()
+    model.fit(x_train, y_train)
+
+    predictions = model.predict(x_test)
+
+    assert len(predictions) == len(y_test)
+    assert np.isfinite(predictions).all()

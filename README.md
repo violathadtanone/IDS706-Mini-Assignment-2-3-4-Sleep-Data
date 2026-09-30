@@ -242,13 +242,13 @@ make docker-build
 <br><br>
 
 ## Functional/Unit Test
-Once we created `test_functional.py` during setup, the test cases can be included across the following framework:
+Once we created `test_functional.py` during setup, comprehensive and edge test cases can be included across the following framework:
 ### 1. Data loading
 - Dataset is loaded as a DataFrame
 - Dataset is not empty
 - There are 374 rows and 13 columns
 - Expected columns are presented
-- No duplication in Person ID
+- No duplication in Person ID (Edge case)
 
 ### 2. Data preprocessing and transformation
 - Dataset contains only female observations
@@ -257,19 +257,24 @@ Once we created `test_functional.py` during setup, the test cases can be include
 - Age Group contains only expected categories
 - Daily Step Level variable is created
 - Daily Step Level contains only expected categories
+- `Unknown` is returned for out-of-bound age values (Edge case)
 
 ### 3. Data Visualization
 - Categorical variables are as expected
 - Mean Sleep Duration values are valid and within the expected range of 0–10 hours
+- Values use for visualization are not missing (Edge case)
 
 ### 4. Machine learning model training, prediction and evaluation
 - Model predictions are valid, finite, and match the test dataset size
 - Model evaluation and visualization data are valid, with finite R²/RMSE values and the expected structure
 - Test Sleep Duration values and the perfect prediction line have a valid range
+- Model produces predictions for extreme input values (Edge case)
 <br><br>
 
 ## Integration Test
-Instead of treating each function separately, we check that the entire workflow in a single test to validate the interaction between each components. This includes: 
+Instead of treating each function separately, we check that the entire workflow in a single test to validate the interaction between each components, where an edge case is also included to ensure that the entire pipeline still works with a very small dataset.
+
+This includes: 
 - Data loading
 - Data preprocessing and transformation → Using raw data from data loading
 - Machine learning model training → Using preprocessing data
