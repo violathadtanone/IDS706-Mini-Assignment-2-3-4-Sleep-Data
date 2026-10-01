@@ -4,3 +4,5 @@ polars
 scikit-learn
 matplotlib
 ruff
+black
+black[jupyter]

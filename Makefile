@@ -23,6 +23,10 @@ clean:
 	rm -rf __pycache__
 	rm -rf .pytest_cache
 
+# Format Python code and Jupyter notebook
+format:
+	python -m black analysis_query.ipynb Testing/test_functional.py Testing/test_integration.py
+
 # Lint Python code for identifying code problems (e.g. unused packages or variables)
 lint:
 	python -m ruff check .

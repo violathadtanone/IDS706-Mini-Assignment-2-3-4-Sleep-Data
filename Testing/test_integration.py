@@ -11,8 +11,9 @@ sleep_data = pd.read_csv("Sleep_health_and_lifestyle_dataset.csv")
 # End-to-End integration test
 # Instead of treating each function separately, we check that the entire workflow in a single test to validate the interaction between each components.
 
+
 def test_integration_workflow():
-    
+
     # 1. Data loading
     sleep_data = pd.read_csv("Sleep_health_and_lifestyle_dataset.csv")
 
@@ -23,9 +24,7 @@ def test_integration_workflow():
     assert "Age" in sleep_data.columns
 
     # 2. Data preprocessing and transformation
-    sleep_data_female = sleep_data[
-        sleep_data["Gender"] == "Female"
-    ].copy()
+    sleep_data_female = sleep_data[sleep_data["Gender"] == "Female"].copy()
 
     sleep_data_female["Age Group"] = np.select(
         [
@@ -34,22 +33,13 @@ def test_integration_workflow():
             sleep_data_female["Age"].between(41, 45),
             sleep_data_female["Age"].between(46, 50),
             sleep_data_female["Age"].between(51, 55),
-            sleep_data_female["Age"].between(56, 60)
+            sleep_data_female["Age"].between(56, 60),
         ],
-        [
-            "<=35",
-            "36-40",
-            "41-45",
-            "46-50",
-            "51-55",
-            "56-60"
-        ],
-        default="Unknown"
+        ["<=35", "36-40", "41-45", "46-50", "51-55", "56-60"],
+        default="Unknown",
     )
 
-    sleep_data_female["Daily Step Level"] = sleep_data_female[
-        "Daily Steps"
-    ].apply(
+    sleep_data_female["Daily Step Level"] = sleep_data_female["Daily Steps"].apply(
         lambda x: "Low" if x <= 5600 else "Medium" if x < 8000 else "High"
     )
 
@@ -82,27 +72,24 @@ def test_integration_workflow():
     assert rmse >= 0
 
     # 5. Data visualization
-    plot_data = pd.DataFrame({
-        "Daily Steps": x_test["Daily Steps"].values,
-        "Actual": y_test.values,
-        "Predicted": predictions
-    }).sort_values("Daily Steps")
+    plot_data = pd.DataFrame(
+        {
+            "Daily Steps": x_test["Daily Steps"].values,
+            "Actual": y_test.values,
+            "Predicted": predictions,
+        }
+    ).sort_values("Daily Steps")
 
     # Check that visualization data is valid
     assert len(plot_data) == len(y_test)
 
-    assert set(plot_data.columns) == {
-        "Daily Steps",
-        "Actual",
-        "Predicted"
-    }
+    assert set(plot_data.columns) == {"Daily Steps", "Actual", "Predicted"}
 
     assert plot_data["Daily Steps"].is_monotonic_increasing
 
-    assert np.isfinite(
-        plot_data[["Daily Steps", "Actual", "Predicted"]].values
-    ).all()
-    
+    assert np.isfinite(plot_data[["Daily Steps", "Actual", "Predicted"]].values).all()
+
+
 # Edge case - Check that the entire pipeline can handle a very small dataset
 def test_edge_5_integration_small_dataset():
     test_data = sleep_data[sleep_data["Gender"] == "Female"].head(10).copy()

@@ -1,4 +1,4 @@
-[![Functional & Integration Testing](https://github.com/violathadtanone/IDS706-Mini-Assignment-2-3-4-Sleep-Data/actions/workflows/Functional%20&%20Integration%20Testing.yml/badge.svg)](https://github.com/violathadtanone/IDS706-Mini-Assignment-2-3-4-Sleep-Data/actions/workflows/Functional%20&%20Integration%20Testing.yml)
+[![Functional & Integration Testing](https://github.com/violathadtanone/IDS706-Mini-Assignment-2-3-4-Sleep-Data/actions/workflows/Workflow%20Testing.yml/badge.svg)](https://github.com/violathadtanone/IDS706-Mini-Assignment-2-3-4-Sleep-Data/actions/workflows/Workflow%20Testing.yml)
 
 # IDS 706 Mini Assignment : Sleep Data Analysis - 22 Sep 2026
 
@@ -68,6 +68,8 @@ polars
 scikit-learn
 matplotlib
 ruff
+black
+black[jupyter]
 ```
 - Install the requirements in the visual environment `(.venv) (base)` with the code below in Terminal:
 ```bash
@@ -164,6 +166,10 @@ docker-test:
 clean:
 	rm -rf __pycache__
 	rm -rf .pytest_cache
+
+# Format Python code and Jupyter notebook
+format:
+	python -m black analysis_query.ipynb Testing/test_functional.py Testing/test_integration.py
 
 # Lint Python code for identifying code problems (e.g. unused packages or variables)
 lint:
@@ -373,23 +379,44 @@ jobs:
 </p>
 <br><br>
 
-## Docker Images
+## Docker and Containerization
 Previously, we use `make docker-build` to build the image using Docker. Additional commands that we can use for Docker include:
-- `docker images` - This shows the list of all the images on our computer
-- `docker run` - This uses the built image to create a container
-- `docker ps ` - This shows all the running container. Because we use `--rm` in `make docker-test`, it automatically deletes our test container afterward.
+- `docker images` - This shows the list of all the images on our computer.
+- `docker run` - This uses the built image to create a container.
+- `docker ps` - This shows all the running container. Because we use `--rm` in `make docker-test`, it automatically deletes our test container afterward.
 - `docker pull python:3.12-slim` - This downloads the Python 3.12 slim image, so Docker can use it as the base image for the project.
+- `docker rm <Container Name>` - This removes the existing stopped container, so Docker can create a new container with the same name.
 - Below is an example of successful image build and running container on Docker.
 <p>
-  <img src="Images/Docker-Image.png" width="480">
-  <img src="Images/Docker-Container.png" width="489">
+  <img src="Images/Docker-Image.png" width="400">
+  <img src="Images/Docker-Container.png" width="400">
 </p>
 <br><br>
 
+## Refactor and Improve Code Quality
+### 1. Refactoring
+- Key areas of refactoring performed was on the development of machine learning and its related function test cases. Helper function was created to handle the repeated steps of fitting regression models, generating predictions, and calculating evaluation metrics such as R² and RMSE.
+- The same sequence of commands was repeated across multiple regression models, including Linear Regression, Decision Tree Regression, Random Forest Regression, and Gradient Boosting Regression. Extracting this repeated logic into functions makes the code shorter and reusable for any future models
+- We can also run the test case locally with `python -m pytest -vv Testing/`, then repeat with `make docker-test` to run all test cases inside the Docker container. If all test cases pass, then it confirms that the refactoring did not break the existing functionality.
+- Screenshots below show the code before refactoring on the left side and after refactoring on the right side.
+<p>
+  <img src="Images/Refactor-Before.png" width="400">
+  <img src="Images/Refactor-After.png" width="400">
+</p>
 
+### 2. Linting checks
+- Linting checks were also performed to check for common Python code-quality and style issues, such as unused imports and incorrect import ordering. Multiple unused packages were identified during data loading and these were resolved with `--fix` from ruff.
+- This check was also added as part of Makefile and CI workflow.
+- The screenshots below show the code before fixing the linting issues on the left and after fixing them on the right.
+<p>
+  <img src="Images/Linting-Before.png" width="400">
+  <img src="Images/Linting-After.png" width="400">
+</p>
 
-
-
-To update
-
-linting python -m ruff check . --fix  
+### 3. Linting checks
+- Black formatting was performed on all python files including analysis_query.ipynb, test_functional.py and test_integration.py
+- It automatically format the Python files and Jupyter notebook to improve code consistency and readability.
+- The code below was used for this step and also added as part of Makefile.
+```bash
+python -m black analysis_query.ipynb Testing/test_functional.py Testing/test_integration.py
+```

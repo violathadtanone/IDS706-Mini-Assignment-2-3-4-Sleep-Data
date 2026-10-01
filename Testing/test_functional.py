@@ -12,16 +12,17 @@ sleep_data = pd.read_csv("Sleep_health_and_lifestyle_dataset.csv")
 # Create female subset
 sleep_data_female = sleep_data[sleep_data["Gender"] == "Female"].copy()
 
+
 # Test Section 1 - Data loading
 # 1.1 Overall data loading
 def test_data_loading():
-    
+
     # Check that the dataset was loaded as a DataFrame
     assert isinstance(sleep_data, pd.DataFrame)
 
     # Check that the dataset is not empty
     assert not sleep_data.empty
-    
+
     # Check the number of rows and columns imported correctly
     assert sleep_data.shape == (374, 13)
 
@@ -43,15 +44,17 @@ def test_data_loading():
 
     assert all(column in sleep_data.columns for column in expected_columns)
 
-# 1.2 Edge case - Check that Person ID contains no duplicate values 
+
+# 1.2 Edge case - Check that Person ID contains no duplicate values
 def test_edge_1_duplicate_person_id():
-    
+
     assert sleep_data["Person ID"].duplicated().sum() == 0
+
 
 # Test Section 2 - Data preprocessing and transformation
 # 2.1 Overall data preprocessing and transformation
 def test_data_processing():
-    
+
     # Check that the subset contains only female observations
     assert (sleep_data_female["Gender"] == "Female").all()
 
@@ -66,17 +69,10 @@ def test_data_processing():
             sleep_data_female["Age"].between(41, 45),
             sleep_data_female["Age"].between(46, 50),
             sleep_data_female["Age"].between(51, 55),
-            sleep_data_female["Age"].between(56, 60)
+            sleep_data_female["Age"].between(56, 60),
         ],
-        [
-            "<=35",
-            "36-40",
-            "41-45",
-            "46-50",
-            "51-55",
-            "56-60"
-        ],
-        default="Unknown"
+        ["<=35", "36-40", "41-45", "46-50", "51-55", "56-60"],
+        default="Unknown",
     )
 
     # Check that Age Group was created
@@ -90,13 +86,11 @@ def test_data_processing():
         "46-50",
         "51-55",
         "56-60",
-        "Unknown"
+        "Unknown",
     }
 
-    assert set(sleep_data_female["Age Group"].unique()).issubset(
-        expected_age_groups
-    )
-    
+    assert set(sleep_data_female["Age Group"].unique()).issubset(expected_age_groups)
+
     # Create Daily Step Level variable
     sleep_data_female["Daily Step Level"] = sleep_data_female["Daily Steps"].apply(
         lambda x: "Low" if x <= 5600 else "Medium" if x < 8000 else "High"
@@ -111,9 +105,10 @@ def test_data_processing():
         expected_step_levels
     )
 
+
 # 2.2 Edge case - Check that 'Unknown' is returned for values out of bound
 def test_edge_2_age_out_of_range():
-    
+
     test_age = pd.Series([61])
 
     age_group = np.select(
@@ -123,20 +118,14 @@ def test_edge_2_age_out_of_range():
             test_age.between(41, 45),
             test_age.between(46, 50),
             test_age.between(51, 55),
-            test_age.between(56, 60)
+            test_age.between(56, 60),
         ],
-        [
-            "<=35",
-            "36-40",
-            "41-45",
-            "46-50",
-            "51-55",
-            "56-60"
-        ],
-        default="Unknown"
+        ["<=35", "36-40", "41-45", "46-50", "51-55", "56-60"],
+        default="Unknown",
     )
 
     assert age_group[0] == "Unknown"
+
 
 # Test Section 3 - Data visualization
 # 3.1 Barchart comparing Sleep Duration between Male and Female
@@ -149,18 +138,12 @@ def test_analysis_visualization_1():
     assert (gender_sleep > 0).all()
     assert (gender_sleep <= 10).all()
 
+
 # 3.2 Barchart comparing Sleep Duration in Female at Different Age Groups
 def test_analysis_visualization_2():
     age_group_sleep = sleep_data_female.groupby("Age Group")["Sleep Duration"].mean()
 
-    expected_age_groups = {
-        "<=35",
-        "36-40",
-        "41-45",
-        "46-50",
-        "51-55",
-        "56-60"
-    }
+    expected_age_groups = {"<=35", "36-40", "41-45", "46-50", "51-55", "56-60"}
 
     assert set(age_group_sleep.index).issubset(expected_age_groups)
     assert len(age_group_sleep) > 0
@@ -168,14 +151,40 @@ def test_analysis_visualization_2():
     assert (age_group_sleep > 0).all()
     assert (age_group_sleep <= 10).all()
 
+
 # 3.3 Edge case - Check that values use for the visualisation are always not NA
 def test_edge_3_visualization_values():
     gender_sleep = sleep_data.groupby("Gender")["Sleep Duration"].mean()
 
     assert np.isfinite(gender_sleep.values).all()
 
+
 # Test Section 4 -  Machine learning model training, prediction and evaluation
 # 4.1 - Overall machines learning model development
+def check_model_predictions(models, x_train, x_test, y_train, y_test):
+    predictions = []
+
+    for model in models:
+        model.fit(x_train, y_train)
+        pred = model.predict(x_test)
+        predictions.append(pred)
+
+        # Prediction checks
+        assert len(pred) == len(y_test)
+        assert np.isfinite(pred).all()
+
+        # Evaluation checks
+        r2 = r2_score(y_test, pred)
+        rmse = np.sqrt(mean_squared_error(y_test, pred))
+
+        assert np.isfinite(r2)
+        assert np.isfinite(rmse)
+        assert rmse >= 0
+
+    return predictions
+
+
+# 4.1 - Overall machine learning model development
 def test_machine_learning_1():
     x1 = sleep_data_female[["Daily Steps"]]
     y1 = sleep_data_female["Sleep Duration"]
@@ -187,36 +196,21 @@ def test_machine_learning_1():
     models = [
         LinearRegression(),
         DecisionTreeRegressor(random_state=100),
-        RandomForestRegressor(random_state=100)
+        RandomForestRegressor(random_state=100),
     ]
 
-    predictions = []
-
-    for model in models:
-        model.fit(x1_train, y1_train)
-        pred = model.predict(x1_test)
-        predictions.append(pred)
-
-        # Prediction checks
-        assert len(pred) == len(y1_test)
-        assert np.isfinite(pred).all()
-
-        # Evaluation checks
-        r2 = r2_score(y1_test, pred)
-        rmse = np.sqrt(mean_squared_error(y1_test, pred))
-
-        assert np.isfinite(r2)
-        assert np.isfinite(rmse)
-        assert rmse >= 0
+    predictions = check_model_predictions(models, x1_train, x1_test, y1_train, y1_test)
 
     # Check data used for visualization
-    plot_data = pd.DataFrame({
-        "Daily Steps": x1_test["Daily Steps"].values,
-        "Actual": y1_test.values,
-        "Linear Regression": predictions[0],
-        "Decision Tree": predictions[1],
-        "Random Forest": predictions[2]
-    }).sort_values("Daily Steps")
+    plot_data = pd.DataFrame(
+        {
+            "Daily Steps": x1_test["Daily Steps"].values,
+            "Actual": y1_test.values,
+            "Linear Regression": predictions[0],
+            "Decision Tree": predictions[1],
+            "Random Forest": predictions[2],
+        }
+    ).sort_values("Daily Steps")
 
     assert len(plot_data) == len(y1_test)
 
@@ -225,12 +219,13 @@ def test_machine_learning_1():
         "Actual",
         "Linear Regression",
         "Decision Tree",
-        "Random Forest"
+        "Random Forest",
     }
 
     assert set(plot_data.columns) == expected_columns
     assert plot_data["Daily Steps"].is_monotonic_increasing
     assert np.isfinite(plot_data.drop(columns=["Daily Steps"]).values).all()
+
 
 def test_machine_learning_2():
     x2 = sleep_data[["Daily Steps", "Age"]]
@@ -243,27 +238,10 @@ def test_machine_learning_2():
     models = [
         DecisionTreeRegressor(random_state=100),
         RandomForestRegressor(random_state=100),
-        GradientBoostingRegressor(random_state=100)
+        GradientBoostingRegressor(random_state=100),
     ]
 
-    predictions = []
-
-    for model in models:
-        model.fit(x2_train, y2_train)
-        pred = model.predict(x2_test)
-        predictions.append(pred)
-
-        # Prediction checks
-        assert len(pred) == len(y2_test)
-        assert np.isfinite(pred).all()
-
-        # Evaluation checks
-        r2 = r2_score(y2_test, pred)
-        rmse = np.sqrt(mean_squared_error(y2_test, pred))
-
-        assert np.isfinite(r2)
-        assert np.isfinite(rmse)
-        assert rmse >= 0
+    predictions = check_model_predictions(models, x2_train, x2_test, y2_train, y2_test)
 
     # Check data used for visualization
     assert len(y2_test) == len(predictions[0])
@@ -280,7 +258,8 @@ def test_machine_learning_2():
     line_max = y2_test.max()
 
     assert line_min <= line_max
-    
+
+
 # 4.2 Edge case - Check that the model still performed prediction with extreme values
 def test_edge_4_ml_extreme_input():
     x = pd.DataFrame({"Daily Steps": [0, 100000]})
