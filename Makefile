@@ -22,3 +22,7 @@ docker-test:
 clean:
 	rm -rf __pycache__
 	rm -rf .pytest_cache
+
+# Lint Python code for identifying code problems (e.g. unused packages or variables)
+lint:
+	python -m ruff check .

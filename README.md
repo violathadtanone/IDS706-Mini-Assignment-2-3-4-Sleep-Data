@@ -67,6 +67,7 @@ pandas
 polars
 scikit-learn
 matplotlib
+ruff
 ```
 - Install the requirements in the visual environment `(.venv) (base)` with the code below in Terminal:
 ```bash

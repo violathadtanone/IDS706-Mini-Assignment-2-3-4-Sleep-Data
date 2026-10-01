@@ -30,6 +30,9 @@ jobs:
 
       - name: Install dependencies
         run: make install
+      
+      - name: Run linting
+        run: make lint
 
       - name: Run both functional and integration tests with Makefile
         run: make test
