@@ -374,8 +374,8 @@ jobs:
 ### 2. Validate workflow run
 - We can check the successful run of the workflow, where the green icon indicates a complete run, where red icon indicates some failure during the run. The screenshot of CI results can also be seen below, where all workflows successfully ran.
 <p>
-  <img src="Images/CI_results1.png" width="480">
-  <img src="Images/CI_results2.png" width="489">
+  <img src="Images/CI_results1.png" width="400">
+  <img src="Images/CI_results2.png" width="400">
 </p>
 <br><br>
 
