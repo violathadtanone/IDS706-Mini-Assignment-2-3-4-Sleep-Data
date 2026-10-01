@@ -5,10 +5,19 @@ on:
   push:
   pull_request:
   workflow_dispatch:
+  schedule:
+    - cron: "0 12 * * 1" # Schedule to run automatically every Monday at 12:00 UTC
 
 jobs:
   test:
     runs-on: ubuntu-latest
+
+    # Matrix lets GitHub Actions automatically run the tests across multiple Python versions
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+
+
 
     steps:
       - name: Check out repository
