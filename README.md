@@ -12,20 +12,20 @@ This repository consolidates 2nd and 3rd mini assignment under IDS 706 as part o
 ## Project Structure 
 ```bash
 IDS706-Mini-Assignment-2-3-Sleep-Data
-├── requirements.txt                        # List of packages required for installation
-├── analysis_query.ipynb                    # Jupyter Notebook for Data Analysis
-├── Sleep_health_and_lifestyle_dataset.csv  # Dataset required for Data Analysis
+├── requirements.txt                           # List of packages required for installation
+├── analysis_query.ipynb                       # Jupyter Notebook for Data Analysis
+├── Sleep_health_and_lifestyle_dataset.csv     # Dataset required for Data Analysis
 ├── Testing/                   
-│   ├── test_functional.py                  # Functional test command
-│   ├── test_integration.py                 # Integration test - End to end workflow run
-├── Makefile                                # Create shortcut to all common command for the development
-├── Dockerfile                              # Docker container to package everything we built
+│   ├── test_functional.py                     # Functional test command
+│   ├── test_integration.py                    # Integration test - End to end workflow run
+├── Makefile                                   # Create shortcut to all common command for the development
+├── Dockerfile                                 # Docker container to package everything we built
 ├── .github/                   
 │   ├── workflows        
-│       ├── test.yml                        # GitHub Actions workflow
-├── Images/                                 # Images used for supporting README.md explanation
-├── Rust Experience/                        # Jupyter Notebook for Rust Exploration based on the provide template
-└── README.md                               # Project documentation
+│       ├── Workflow Testing.yml               # GitHub Actions workflow
+├── Images/                                    # Images used for supporting README.md explanation
+├── Rust Experience/                           # Jupyter Notebook for Rust Exploration based on the provide template
+└── README.md                                  # Project documentation
 ```
 
 ## Dataset Description 
@@ -317,7 +317,7 @@ This will allow us to use GitHub Action to automatically run the tests.
 
 ### 1. Add GitHub Actions
 - Create the folder called `.github` in the project root and create another subfolder called `workflows`.
-- Create the file called `test.yml` within `workflows` and include the code below:
+- Create the file called `Workflow Testing.yml` within `workflows` and include the code below:
 ```
 name: Functional & Integration Testing
 
@@ -326,8 +326,10 @@ on:
   push:
   pull_request:
   workflow_dispatch:
+  
+  # Schedule to run automatically every Monday at 12:00 UTC
   schedule:
-    - cron: "0 12 * * 1" # Schedule to run automatically every Monday at 12:00 UTC
+    - cron: "0 12 * * 1" 
 
 jobs:
   test:
@@ -368,7 +370,9 @@ jobs:
 ![CI Results1](Images/CI_results1.png)
 ![CI Results2](Images/CI_results2.png)
 
-
+## Rust Exploration
+- Further details on experimentation with Rust can be found from https://github.com/violathadtanone/IDS706-Mini-Assignment-2-3-Sleep-Data/blob/main/Rust%20Experience/rust_vs_python_intro.ipynb
+<br><br>
 
 
 

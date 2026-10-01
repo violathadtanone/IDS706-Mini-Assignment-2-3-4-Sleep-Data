@@ -5,8 +5,10 @@ on:
   push:
   pull_request:
   workflow_dispatch:
+
+  # Schedule to run automatically every Monday at 12:00 UTC
   schedule:
-    - cron: "0 12 * * 1" # Schedule to run automatically every Monday at 12:00 UTC
+    - cron: "0 12 * * 1" 
 
 jobs:
   test:
