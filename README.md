@@ -388,8 +388,8 @@ Previously, we use `make docker-build` to build the image using Docker. Addition
 - `docker rm <Container Name>` - This removes the existing stopped container, so Docker can create a new container with the same name.
 - Below is an example of successful image build and running container on Docker.
 <p>
-  <img src="Images/Docker-Image.png" width="400">
-  <img src="Images/Docker-Container.png" width="400">
+  <img src="Images/docker-image.png" width="400">
+  <img src="Images/docker-container.png" width="400">
 </p>
 <br><br>
 
@@ -400,8 +400,8 @@ Previously, we use `make docker-build` to build the image using Docker. Addition
 - We can also run the test case locally with `python -m pytest -vv Testing/`, then repeat with `make docker-test` to run all test cases inside the Docker container. If all test cases pass, then it confirms that the refactoring did not break the existing functionality.
 - Screenshots below show the code before refactoring on the left side and after refactoring on the right side.
 <p>
-  <img src="Images/Refactor-Before.png" width="400">
-  <img src="Images/Refactor-After.png" width="400">
+  <img src="Images/refactor-before.png" width="400">
+  <img src="Images/refactor-after.png" width="400">
 </p>
 
 ### 2. Linting checks
@@ -409,8 +409,8 @@ Previously, we use `make docker-build` to build the image using Docker. Addition
 - This check was also added as part of Makefile and CI workflow.
 - The screenshots below show the code before fixing the linting issues on the left and after fixing them on the right.
 <p>
-  <img src="Images/Linting-Before.png" width="400">
-  <img src="Images/Linting-After.png" width="400">
+  <img src="Images/linting-before.png" width="400">
+  <img src="Images/linting-after.png" width="400">
 </p>
 
 ### 3. Linting checks
