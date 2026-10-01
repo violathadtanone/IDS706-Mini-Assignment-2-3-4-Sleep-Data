@@ -87,16 +87,17 @@ pytest --version
 ### 2. Import required library
 - In `analysis_query.ipynb`, use the code below to import the installed packages during setup.
 ```python
+import time
+
+import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 import polars as pl
-import numpy as np
-from sklearn.model_selection import train_test_split
+from sklearn.ensemble import GradientBoostingRegressor, RandomForestRegressor
 from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeRegressor
-from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
-from sklearn.metrics import mean_squared_error, r2_score, accuracy_score, classification_report
-import matplotlib.pyplot as plt
-import time
 ```
 - Check whether the packages for pandas, polars and numpy have been properly imported into the enviroment. This should return the version number.
  ```python
@@ -139,7 +140,7 @@ evcxr_jupyter --install
 ### 2. Create a Makefile
 - Create a new file called `Makefile` in the project root with the code below. The file should have Orange icon.
 ```
-.PHONY: install test run docker-build docker-run docker-test clean
+.PHONY: install test docker-build docker-run docker-test clean
 
 IMAGE_NAME := mini-assignment-3
 
@@ -163,6 +164,10 @@ docker-test:
 clean:
 	rm -rf __pycache__
 	rm -rf .pytest_cache
+
+# Lint Python code for identifying code problems (e.g. unused packages or variables)
+lint:
+	python -m ruff check .
 ```
 
 ### 3. Run the project with Docker
@@ -321,10 +326,17 @@ on:
   push:
   pull_request:
   workflow_dispatch:
+  schedule:
+    - cron: "0 12 * * 1" # Schedule to run automatically every Monday at 12:00 UTC
 
 jobs:
   test:
     runs-on: ubuntu-latest
+
+    # Matrix lets GitHub Actions automatically run the tests across multiple Python versions
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
 
     steps:
       - name: Check out repository
@@ -337,6 +349,9 @@ jobs:
 
       - name: Install dependencies
         run: make install
+      
+      - name: Run linting
+        run: make lint
 
       - name: Run both functional and integration tests with Makefile
         run: make test
@@ -352,3 +367,12 @@ jobs:
 - We can check the successful run of the workflow, where the green icon indicates a complete run, where red icon indicates some failure during the run. The screenshot of CI results can also be seen below, where all workflows successfully ran.
 ![CI Results1](Images/CI_results1.png)
 ![CI Results2](Images/CI_results2.png)
+
+
+
+
+
+
+To update
+
+linting python -m ruff check . --fix  
