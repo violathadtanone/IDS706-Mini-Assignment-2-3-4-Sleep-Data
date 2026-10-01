@@ -413,7 +413,7 @@ Previously, we use `make docker-build` to build the image using Docker. Addition
   <img src="Images/linting-after.png" width="400">
 </p>
 
-### 3. Linting checks
+### 3. Black formatting
 - Black formatting was performed on all python files including analysis_query.ipynb, test_functional.py and test_integration.py
 - It automatically format the Python files and Jupyter notebook to improve code consistency and readability.
 - The code below was used for this step and also added as part of Makefile.
