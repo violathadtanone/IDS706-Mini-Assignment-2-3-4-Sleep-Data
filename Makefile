@@ -16,7 +16,7 @@ docker-build:
 
 # Run the test suite from Testing folder inside Docker
 docker-test:
-	docker run --rm $(IMAGE_NAME) python -m pytest -vv Testing/
+	docker run --name sleep-data-test $(IMAGE_NAME) python -m pytest -vv Testing/
 
 # Clean generated files
 clean:

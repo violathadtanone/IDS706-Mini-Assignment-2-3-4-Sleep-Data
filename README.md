@@ -158,7 +158,7 @@ docker-build:
 
 # Run the test suite from Testing folder inside Docker
 docker-test:
-	docker run --rm $(IMAGE_NAME) python -m pytest -vv Testing/
+	docker run --name sleep-data-test $(IMAGE_NAME) python -m pytest -vv Testing/
 
 # Clean generated files
 clean:
@@ -367,12 +367,25 @@ jobs:
 
 ### 2. Validate workflow run
 - We can check the successful run of the workflow, where the green icon indicates a complete run, where red icon indicates some failure during the run. The screenshot of CI results can also be seen below, where all workflows successfully ran.
-![CI Results1](Images/CI_results1.png)
-![CI Results2](Images/CI_results2.png)
-
-## Rust Exploration
-- Further details on experimentation with Rust can be found from https://github.com/violathadtanone/IDS706-Mini-Assignment-2-3-Sleep-Data/blob/main/Rust%20Experience/rust_vs_python_intro.ipynb
+<p>
+  <img src="Images/CI_results1.png" width="480">
+  <img src="Images/CI_results2.png" width="489">
+</p>
 <br><br>
+
+## Docker Images
+Previously, we use `make docker-build` to build the image using Docker. Additional commands that we can use for Docker include:
+- `docker images` - This shows the list of all the images on our computer
+- `docker run` - This uses the built image to create a container
+- `docker ps ` - This shows all the running container. Because we use `--rm` in `make docker-test`, it automatically deletes our test container afterward.
+- `docker pull python:3.12-slim` - This downloads the Python 3.12 slim image, so Docker can use it as the base image for the project.
+- Below is an example of successful image build and running container on Docker.
+<p>
+  <img src="Images/Docker-Image.png" width="480">
+  <img src="Images/Docker-Container.png" width="489">
+</p>
+<br><br>
+
 
 
 
