@@ -26,10 +26,18 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: ${{ matrix.python-version }}
 
       - name: Install dependencies
         run: make install
+
+      - name: Check required project files
+        run: |
+          test -f Sleep_health_and_lifestyle_dataset.csv
+          test -f analysis_query.ipynb
+          test -f Makefile
+          test -f Dockerfile
+          test -d Testing        
       
       - name: Run linting
         run: make lint
