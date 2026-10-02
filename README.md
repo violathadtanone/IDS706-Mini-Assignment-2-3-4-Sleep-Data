@@ -401,8 +401,6 @@ Previously, we use `make docker-build` to build the image using Docker, while `m
   <img src="Images/docker-image.png" width="400">
   <img src="Images/docker-container.png" width="400">
 </p>
-<br><br>
-
 
 Additional commands that can be used for Docker include:
 - `docker images` - This shows the list of all the images on our computer.
@@ -411,7 +409,7 @@ Additional commands that can be used for Docker include:
 - `docker pull python:3.12-slim` - This downloads the Python 3.12 slim image, so Docker can use it as the base image for the project.
 - `docker rm <Container Name>` - This removes the existing stopped container, so Docker can re-create a new container with the same name.
 - Noted that if we use `--rm` in `make docker-test`, it automatically deletes our test container afterward.
-
+<br><br>
 
 ## Refactoring and Improving Code Quality
 ### 1. Refactoring
