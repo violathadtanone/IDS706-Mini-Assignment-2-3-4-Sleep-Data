@@ -1,12 +1,13 @@
 [![Functional & Integration Testing](https://github.com/violathadtanone/IDS706-Mini-Assignment-2-3-4-Sleep-Data/actions/workflows/Workflow%20Testing.yml/badge.svg)](https://github.com/violathadtanone/IDS706-Mini-Assignment-2-3-4-Sleep-Data/actions/workflows/Workflow%20Testing.yml)
 
-# IDS 706 Mini Assignment : Sleep Data Analysis - 22 Sep 2026
+# IDS 706 Mini Assignment : Sleep Data Analysis - 1 Oct 2026
 
 ## Project Description
-This repository consolidates 2nd and 3rd mini assignment under IDS 706 as part of the 3-week project.
+This repository consolidates 2nd and 3rd mini assignment and 1st major assignment under IDS 706 as part of the 3-week project.
 
 - 2nd Mini Assignment - Start Your First Data Analysis: The first part covers the usage of pandas and polars with common data manipulation and visualisation. The latter part of this assignment covers experimentation with Rust on Jupyter notebook from the provided Rust template.
 - 3rd Mini Assignment - Testing and Reproducibility: This is for practicing the creation of functional and integration test cases and setting up a GitHub Actions workflow as an enhancement of those in 2nd Mini Assignment, especially on the analysis using Pandas.
+- 1st Major Assignment - Enhance your mini-assignments with tools and content: This focuses on improving the reliability and reproducibility of the data analysis project through CI automation, Docker containerization, and code refactoring. It also emphasizes applying linting, formatting, meaningful edge-case testing, and clear documentation to create a more maintainable and polished project.
 
 
 ## Project Structure 
@@ -242,6 +243,13 @@ make docker-build
 
 ![Machine Learning Scenario 2](Images/machine_s2.png)
 
+### Key Takeaways
+- Overall, the analysis suggests that sleep duration may be influenced by multiple factors such as gender, age, and daily activity level.
+- The machine learning results also showed that including age alongside daily steps significantly improved prediction performance, which highlights the importance of incorporating multiple variables when studying sleep patterns.
+- However, these findings are based on a relatively small dataset of only 374 individuals. The analysis results should not be generalized to a broader population. 
+- Given that this project was designed as a data analysis practice under Jupyter Notebooks, similar approach could be expanded using a larger and more diverse dataset with additional health and lifestyle variables to further investigate the factors associated with sleep duration.
+
+
 ## Pandas vs Polars Performance
 - Polars was slightly faster than Pandas for the data analysis section (0.68s vs. 0.7s), but slower for the machine learning section (0.95s vs. 0.76s).
 - Overall, this partially aligned with the general consensus that Polars can outperform Pandas, particularly for data manipulation, but Polars’ performance depends on the type of task, and it may not be faster when using tools like scikit-learn.
@@ -332,7 +340,7 @@ on:
   push:
   pull_request:
   workflow_dispatch:
-  
+
   # Schedule to run automatically every Monday at 12:00 UTC
   schedule:
     - cron: "0 12 * * 1" 
@@ -353,10 +361,18 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: ${{ matrix.python-version }}
 
       - name: Install dependencies
         run: make install
+
+      - name: Check required project files
+        run: |
+          test -f Sleep_health_and_lifestyle_dataset.csv
+          test -f analysis_query.ipynb
+          test -f Makefile
+          test -f Dockerfile
+          test -d Testing        
       
       - name: Run linting
         run: make lint
@@ -380,20 +396,24 @@ jobs:
 <br><br>
 
 ## Docker and Containerization
-Previously, we use `make docker-build` to build the image using Docker. Additional commands that we can use for Docker include:
-- `docker images` - This shows the list of all the images on our computer.
-- `docker run` - This uses the built image to create a container.
-- `docker ps` - This shows all the running container. Because we use `--rm` in `make docker-test`, it automatically deletes our test container afterward.
-- `docker pull python:3.12-slim` - This downloads the Python 3.12 slim image, so Docker can use it as the base image for the project.
-- `docker rm <Container Name>` - This removes the existing stopped container, so Docker can create a new container with the same name.
-- Below is an example of successful image build and running container on Docker.
+Previously, we use `make docker-build` to build the image using Docker, while `make docker-test` creates and runs a container that executes the test suite. Below is an example of successful image build and running container on Docker.
 <p>
   <img src="Images/docker-image.png" width="400">
   <img src="Images/docker-container.png" width="400">
 </p>
 <br><br>
 
-## Refactor and Improve Code Quality
+
+Additional commands that can be used for Docker include:
+- `docker images` - This shows the list of all the images on our computer.
+- `docker run` - This uses Docker image to create and start a new container
+- `docker ps` - This shows all the running container.
+- `docker pull python:3.12-slim` - This downloads the Python 3.12 slim image, so Docker can use it as the base image for the project.
+- `docker rm <Container Name>` - This removes the existing stopped container, so Docker can re-create a new container with the same name.
+- Noted that if we use `--rm` in `make docker-test`, it automatically deletes our test container afterward.
+
+
+## Refactoring and Improving Code Quality
 ### 1. Refactoring
 - Key areas of refactoring performed was on the development of machine learning and its related function test cases. Helper function was created to handle the repeated steps of fitting regression models, generating predictions, and calculating evaluation metrics such as R² and RMSE.
 - The same sequence of commands was repeated across multiple regression models, including Linear Regression, Decision Tree Regression, Random Forest Regression, and Gradient Boosting Regression. Extracting this repeated logic into functions makes the code shorter and reusable for any future models
@@ -409,8 +429,8 @@ Previously, we use `make docker-build` to build the image using Docker. Addition
 - This check was also added as part of Makefile and CI workflow.
 - The screenshots below show the code before fixing the linting issues on the left and after fixing them on the right.
 <p>
-  <img src="Images/linting-before.png" width="400">
-  <img src="Images/linting-after.png" width="400">
+  <img src="Images/linting_1.png" width="400" height="200">
+  <img src="Images/linting_2.png" width="400" height="200">
 </p>
 
 ### 3. Black formatting
