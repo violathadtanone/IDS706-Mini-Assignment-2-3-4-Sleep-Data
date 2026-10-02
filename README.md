@@ -9,7 +9,6 @@ This repository consolidates 2nd and 3rd mini assignment and 1st major assignmen
 - 3rd Mini Assignment - Testing and Reproducibility: This is for practicing the creation of functional and integration test cases and setting up a GitHub Actions workflow as an enhancement of those in 2nd Mini Assignment, especially on the analysis using Pandas.
 - 1st Major Assignment - Enhance your mini-assignments with tools and content: This focuses on improving the reliability and reproducibility of the data analysis project through CI automation, Docker containerization, and code refactoring. It also emphasizes applying linting, formatting, meaningful edge-case testing, and clear documentation to create a more maintainable and polished project.
 
-
 ## Project Structure 
 ```bash
 IDS706-Mini-Assignment-2-3-Sleep-Data
@@ -32,6 +31,8 @@ IDS706-Mini-Assignment-2-3-Sleep-Data
 ## Dataset Description 
 The dataset uses for this assignment is Sleep_health_and_lifestyle_dataset.csv from Kaggle. It includes a wide range of variables related to sleep and daily habits such as gender, age, occupation, sleep duration, quality of sleep, and the presence or absence of sleep disorders. It can be download from: https://www.kaggle.com/datasets/uom190346a/sleep-health-and-lifestyle-dataset
 
+## Problem Statement:
+This project aims to explore how demographic and lifestyle factors, such as gender, age, and daily activity level, are associated with sleep duration using a small sleep-health dataset. The analysis also explores whether these factors can be used to predict sleep duration through machine learning models.
 
 ## Overall Setup Instructions
 ### 1. Creat GitHub repository
