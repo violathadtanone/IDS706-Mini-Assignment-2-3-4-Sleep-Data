@@ -342,9 +342,9 @@ on:
   pull_request:
   workflow_dispatch:
 
-  # Schedule to run automatically every Monday at 12:00 UTC
+  # Schedule to run automatically every 1st day on a bi-monthly basis
   schedule:
-    - cron: "0 12 * * 1" 
+    - cron: "0 12 1 1,3,5,7,9,11 *"
 
 jobs:
   test:
