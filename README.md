@@ -5,9 +5,9 @@
 ## Project Description
 This repository consolidates 2nd and 3rd mini assignment and 1st major assignment under IDS 706 as part of the 3-week project.
 
-- 2nd Mini Assignment - Start Your First Data Analysis: The first part covers the usage of pandas and polars with common data manipulation and visualisation. The latter part of this assignment covers experimentation with Rust on Jupyter notebook from the provided Rust template.
-- 3rd Mini Assignment - Testing and Reproducibility: This is for practicing the creation of functional and integration test cases and setting up a GitHub Actions workflow as an enhancement of those in 2nd Mini Assignment, especially on the analysis using Pandas.
-- 1st Major Assignment - Enhance your mini-assignments with tools and content: This focuses on improving the reliability and reproducibility of the data analysis project through CI automation, Docker containerization, and code refactoring. It also emphasizes applying linting, formatting, meaningful edge-case testing, and clear documentation to create a more maintainable and polished project.
+- **2nd Mini Assignment** - Start Your First Data Analysis: The first part covers the usage of pandas and polars with common data manipulation and visualisation. The latter part of this assignment covers experimentation with Rust on Jupyter notebook from the provided Rust template.
+- **3rd Mini Assignment** - Testing and Reproducibility: This is for practicing the creation of functional and integration test cases and setting up a GitHub Actions workflow as an enhancement of those in 2nd Mini Assignment, especially on the analysis using Pandas.
+- **1st Major Assignment** - Enhance your mini-assignments with tools and content: This focuses on improving the reliability and reproducibility of the data analysis project through CI automation, Docker containerization, and code refactoring. It also emphasizes applying linting, formatting, meaningful edge-case testing, and clear documentation to create a more maintainable and polished project.
 
 ## Project Structure 
 ```bash
